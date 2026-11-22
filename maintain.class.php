@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_log (
   bot_score    SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   block_reason VARCHAR(16)  DEFAULT NULL,
   hosting      TINYINT(1)   DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
+) ENGINE=MyISAM;');
 
         pwg_query('
 CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_cache (
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_cache (
   city         VARCHAR(64),
   hosting      TINYINT(1)   DEFAULT NULL,
   resolved_at  DATETIME     NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
+) ENGINE=MyISAM;');
 
         pwg_query('
 CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_blocklist (
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_blocklist (
   blocked_at   DATETIME     NOT NULL,
   origin       VARCHAR(8)   NOT NULL DEFAULT \'manuel\',
   expires_at   DATETIME     DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
+) ENGINE=MyISAM;');
 
         // Migration v1.4 → v1.5 : remplacer reason par country + city
         $cols = [];
@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_robot_count (
   logged        INT UNSIGNED NOT NULL DEFAULT 0,
   counted       INT UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (day, robot, ip)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
+) ENGINE=MyISAM;';
     }
 
     /**
@@ -211,7 +211,7 @@ CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_robot_check (
   robot       VARCHAR(64) NOT NULL,
   verified    TINYINT(1)  NOT NULL DEFAULT 0,
   checked_at  DATETIME    NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;';
+) ENGINE=MyISAM;';
     }
 
     function deactivate()
