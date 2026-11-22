@@ -3,13 +3,17 @@
 Plugin Name: ip_location
 Version: auto
 Description: Log des visites des guests avec géolocalisation IP + traitement htaccess
-Plugin URI: https://piwigo.org/ext/extension_view.php?eid=1068
-Author: Charles69 
+Plugin URI: 
+Author: klaoun2
 Has Settings: webmaster
 */
 
 // Versions
 /*
+    version 3.1 - 24/11/2026
+    changement TYPE MyISAM
+    suppression interclassement
+    
     version 3.0 - 17/11/2026
         regroupement de v2.9.1 à v2.9.4
         pour publication sur PEM
