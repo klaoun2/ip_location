@@ -11,8 +11,8 @@ Has Settings: webmaster
 // Versions
 /*
     version 3.1 - 24/11/2026
-    changement TYPE MyISAM
-    suppression interclassement
+        changement TYPE MyISAM
+        suppression interclassement
     
     version 3.0 - 17/11/2026
         regroupement de v2.9.1 à v2.9.4
