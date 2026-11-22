@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_robot_check (
   robot       VARCHAR(64) NOT NULL,
   verified    TINYINT(1)  NOT NULL DEFAULT 0,
   checked_at  DATETIME    NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
+) ENGINE=MyISAM;');
 
 // d. Compteurs des accès de robots vérifiés non journalisés (v2.7a.5) — même définition
 //    que maintain.class.php::robot_count_table_sql().
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS ' . $prefixeTable . 'ip_location_robot_count (
   logged        INT UNSIGNED NOT NULL DEFAULT 0,
   counted       INT UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (day, robot, ip)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
+) ENGINE=MyISAM;');
 
 // e. Index par IP du journal (v2.7c.2) — même définition que maintain.class.php::activate().
 //    Sans lui, la requête des visites qualifiées pouvait prendre une minute.
