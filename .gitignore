@@ -34,3 +34,4 @@ analyse_journal.py
 
 # Config locale de Claude Code (launch.json, etc.)
 .claude/
+maintain.class.php
