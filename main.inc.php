@@ -10,9 +10,40 @@ Has Settings: webmaster
 
 // Versions
 /*
-    version 3.1 - 24/11/2026
+    version 3.1 - 27/11/2026
     changement TYPE MyISAM
     suppression interclassement
+	
+	version 3.0.1 - 27/11/2026
+        Configuration : liste des IP bloquées automatiquement paginée par 100, côté
+        serveur. Elle était écrite en entière dans la page, avec un formulaire par IP :
+        1 185 IP = 660 Ko de HTML (page de 840 Ko), plus de 10 Mo chez un testeur à
+        20 000 IP. Page Réglages : 840 -> 225 Ko. Recherche dans l'IP, le pays et la ville
+        (remplace le filtre dans le navigateur, qui ne voyait que la page affichée), pages
+        Précédentes / Suivantes, un seul formulaire « Débloquer » par page ; après un
+        déblocage, retour à la même page de la même recherche.
+
+    version 3.0.1 - 27/11/2026
+        Configuration : un changement fait juste après l'ouverture de la page (ex. statut
+        d'un robot) laissait « Enregistrer » grisé. La page fait plusieurs centaines de Ko
+        (liste des IP bloquées automatiquement) : le navigateur affiche les blocs du haut
+        avant d'avoir lu le script de fin de page qui surveille les changements. Au
+        démarrage, ce script compare désormais chaque champ à sa valeur d'origine, active
+        le bouton si besoin, et recolore les statuts des robots déjà changés. Couvre aussi
+        les choix non enregistrés que le navigateur remet en place (Précédent).
+
+    version 3.0.1 - 27/11/2026
+        Lenteur de la page Configuration quand le bloc Robots est actif (testeur sur un
+        vieux NAS 32 bits : 1 min 06 avec Robots, 16 s sans, 159 000 accès) : les
+        conditions « robot autorisé » et « robot bloqué » faisaient un LIKE '%…%' par
+        robot de la liste sur chaque ligne. Les User-Agent distincts sont désormais lus
+        une fois, comparés aux robots en PHP, et la condition devient une comparaison
+        exacte user_agent IN (…) (ip_location_ua_match_sql()). Même résultat, NULL compris.
+        - Réglages : compteurs « robots vus sur 7 jours » et « IP d'hébergeur hors
+          robots autorisés » ; avec 40 robots sur 20 000 accès, 0,6 s -> 0,06 s.
+        - Journal (compteurs, liste, export CSV) : 2 s -> 0,75 s par affichage.
+        - Affichage identique avant/après sur 15 vues (Réglages et Journal filtré).
+        La classification en arrière-plan garde la forme LIKE (aucune page ne l'attend).
 
     version 3.0.1 - 24/11/2026
         Lenteur de la page d'administration sur un gros journal (signalée par deux
@@ -40,7 +71,6 @@ Has Settings: webmaster
         Compteurs et lignes identiques (19 combinaisons de filtres comparées).
 
     version 3.0 - 17/11/2026
-        regroupement de v2.9.1 à v2.9.4
         pour publication sur PEM
 
     version 2.9.4 - 17/11/2026
@@ -89,7 +119,6 @@ Has Settings: webmaster
         sur les vraies valeurs.
 
     version 2.9 - 10/11/2026
-        regroupement de v2.8c.1 à v2.8c.4
         pour publication sur PEM
 
     version 2.8c.4 - 10/11/2026
@@ -133,7 +162,6 @@ Has Settings: webmaster
         tout visiteur qui n'ouvre pas le diaporama.
 
     version 2.8c - 01/11/2026
-    regroupement de v2.8b.1 et v2.8b.2
     publication sur PEM
 
     version 2.8b.2 - 01/11/2026
@@ -150,7 +178,6 @@ Has Settings: webmaster
         Aucune IP ni liste blanche en clair (nombre d'entrées seulement).
 
     version 2.8b - 21/10/2026
-    regroupement de v2.8a.1
     publication sur PEM
 
     version 2.8a.1 - 21/10/2026
@@ -163,7 +190,6 @@ Has Settings: webmaster
         Aide et texte d'exemple du champ mis à jour (FR/EN).
 
     version 2.8a - 15/10/2026
-    regroupement de v2.8.1 à v2.8.3
     publication sur PEM
     
     version 2.8.3 - 15/10/2026
@@ -183,7 +209,6 @@ Has Settings: webmaster
         enregistrée avec le bloc, par le bouton « Enregistrer » du pied de carte.
 
     version 2.8 - 06/10/2026
-        regroupement des 2.7e.1 à 2.7e.5
         pour publication sur PEM
     
     version 2.7e.5 - 06/10/2026
@@ -264,7 +289,6 @@ Has Settings: webmaster
         manuel (« Adresse invalide »).
 
     version 2.7d - 01/10/2026
-        regroupement de v2.7c.1 et v2.7c.2
         pour publication sur PEM
 
     version 2.7c.2 - 01/10/2026
@@ -297,7 +321,6 @@ Has Settings: webmaster
         avec n'importe quelle autre page de la même IP à ± 30 min, pas seulement l'accueil.
 
     version 2.7c - 27/09/2026
-        Regroupement de v2.7b.1 à v2.7b.3
         pour publication sur PEM
 
     version 2.7b.3 - 27/09/2026
@@ -340,7 +363,6 @@ Has Settings: webmaster
         bloqué ? » pour une IP qui n'est pas revenue. Explication ajoutée dans l'Aide.
 
     version 2.7b - 26/09/2026
-        regroupement de v2.7a.1 à v2.7a.7 
         pour publication sur PEM
 
     version 2.7a.7 - 26/09/2026
@@ -451,7 +473,6 @@ Has Settings: webmaster
         Filtre pays des téléchargements : même liste déroulante pour les pays autorisés.
 
     version 2.7 - 24/09/2026
-         intégration des v2.6.1 à 2.6.13
          pour publication sur PEM    
 
     version 2.6.13 - 24/09/2026
@@ -612,7 +633,6 @@ Has Settings: webmaster
         pour une copie de fichiers sans passer par la mise à jour Piwigo)
 
     version 2.6 - 23/09/2026
-        intégration des versions 2.5.1 à 2.5.5
         pour diffusion PEM
 
     version 2.5.5 - 23/09/2026
@@ -1063,7 +1083,7 @@ function ip_location_visitors_periods()
  * IPv6 : SUBSTRING_INDEX ne trouve pas de '.', la clé construite ne correspond jamais
  * à une plage — seule la correspondance exacte s'applique (pas de plage IPv6).
  */
-function ip_location_currently_blocked_sql($prefixeTable, $ip_col = 'ip', $ua_col = 'user_agent')
+function ip_location_currently_blocked_sql($prefixeTable, $ip_col = 'ip', $ua_col = 'user_agent', $ua_values = null)
 {
     $plugin_conf = ip_location_get_conf();
     $parts = [];
@@ -1077,10 +1097,15 @@ function ip_location_currently_blocked_sql($prefixeTable, $ip_col = 'ip', $ua_co
             . " WHERE origin = 'auto' AND (expires_at IS NULL OR expires_at > NOW()))";
     }
     if ($plugin_conf['robots_enabled'] === '1') {
+        $blocked = [];
         foreach (ip_location_get_robots() as $robot) {
             if (($robot['status'] ?? 'allow') === 'block' && $robot['ua'] !== '') {
-                $parts[] = "{$ua_col} LIKE '%" . pwg_db_real_escape_string($robot['ua']) . "%'";
+                $blocked[] = (string)$robot['ua'];
             }
+        }
+        if (!empty($blocked)) {
+            // $ua_values (v3.0a.1) : cf. ip_location_ua_match_sql()
+            $parts[] = ip_location_ua_match_sql($ua_col, $blocked, $ua_values);
         }
     }
     return empty($parts) ? '0' : '(' . implode(' OR ', $parts) . ')';
@@ -2299,24 +2324,60 @@ function ip_location_request_robot_state($ip_raw, $user_agent)
  * authentique : UA correspondant à un robot "autorisé" de la liste, et IP non démasquée
  * comme usurpatrice (ip_location_robot_check.verified = 0). '0' si le bloc Robots est
  * coupé ou sans robot autorisé. Remplace l'ancienne liste blanche UA (jusqu'en v2.6.1).
+ *
+ * $ua_values (v3.0a.1) : User-Agent distincts déjà lus par l'appelant sur la même
+ * période. Ceux d'un robot autorisé sont retrouvés en PHP (stripos, même correspondance
+ * que le LIKE), et la condition devient « user_agent IN (…) » : une comparaison exacte
+ * par ligne au lieu d'un LIKE '%…%' par robot (près d'une minute pour 160 000 accès sur
+ * un NAS 32 bits peu doté en mémoire). Même résultat, NULL compris.
  */
-function ip_location_allowed_robot_sql($prefixeTable, $ua_col = 'user_agent', $ip_col = 'ip')
+function ip_location_allowed_robot_sql($prefixeTable, $ua_col = 'user_agent', $ip_col = 'ip', $ua_values = null)
 {
     $plugin_conf = ip_location_get_conf();
     if ($plugin_conf['robots_enabled'] !== '1') {
         return '0';
     }
-    $likes = [];
+    $allowed = [];
     foreach (ip_location_get_robots() as $robot) {
         if (($robot['status'] ?? 'allow') === 'allow' && $robot['ua'] !== '') {
-            $likes[] = $ua_col . " LIKE '%" . pwg_db_real_escape_string($robot['ua']) . "%'";
+            $allowed[] = (string)$robot['ua'];
         }
     }
-    if (empty($likes)) {
+    if (empty($allowed)) {
         return '0';
     }
-    return '((' . implode(' OR ', $likes) . ') AND ' . $ip_col . ' NOT IN (SELECT ip FROM '
+    return '(' . ip_location_ua_match_sql($ua_col, $allowed, $ua_values) . ' AND ' . $ip_col . ' NOT IN (SELECT ip FROM '
         . $prefixeTable . 'ip_location_robot_check WHERE verified = 0))';
+}
+
+/**
+ * Condition SQL (parenthésée) « le User-Agent contient l'un de ces fragments » (v3.0a.1).
+ * Sans $ua_values : un LIKE '%…%' par fragment. Avec $ua_values (User-Agent distincts
+ * des lignes que la requête parcourra, ou plus) : la correspondance est faite en PHP
+ * (stripos, insensible à la casse comme le LIKE sous la collation de la table) et la
+ * condition devient une comparaison exacte « IN (…) ». Même valeur ligne par ligne, NULL
+ * compris : un User-Agent NULL donne NULL dans les deux formes.
+ */
+function ip_location_ua_match_sql($ua_col, array $needles, $ua_values = null)
+{
+    if ($ua_values === null) {
+        $likes = [];
+        foreach ($needles as $needle) {
+            $likes[] = $ua_col . " LIKE '%" . pwg_db_real_escape_string($needle) . "%'";
+        }
+        return '(' . implode(' OR ', $likes) . ')';
+    }
+    $in = [];
+    foreach ($ua_values as $ua) {
+        foreach ($needles as $needle) {
+            if (stripos((string)$ua, $needle) !== false) {
+                $in[] = "'" . pwg_db_real_escape_string((string)$ua) . "'";
+                break;
+            }
+        }
+    }
+    // Aucune correspondance : faux pour toute ligne, NULL pour un User-Agent NULL
+    return empty($in) ? '(' . $ua_col . ' <> ' . $ua_col . ')' : '(' . $ua_col . ' IN (' . implode(',', $in) . '))';
 }
 
 /**
@@ -3944,4 +4005,3 @@ SELECT COUNT(*) FROM ' . $prefixeTable . 'ip_location_log
 
     return false;
 }
-
